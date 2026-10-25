@@ -7,11 +7,11 @@ import {
   ChartNoAxesCombined,
   ChevronDown,
   FileSpreadsheet,
-  Headset,
   LayoutDashboard,
   LogOut,
   Settings,
   ShieldCheck,
+  ArrowLeftRight ,
   Users,
   UsersRound,
   UserRoundCheck,
@@ -35,6 +35,7 @@ const [reportsOpen, setReportsOpen] = useState(
       { to: '/leads', label: 'All leads', icon: Users },
       { to: '/telecallers', label: 'Telecallers', icon: Users },
       { to: '/import', label: 'Import leads', icon: FileSpreadsheet },
+      { to: '/transfer-leads', label: 'Transfer Leads', icon: ArrowLeftRight },
       { to: '/follow-ups', label: 'Follow-ups', icon: CalendarDays },
       { to: '/callbacks', label: 'Admin callbacks', icon: UserRoundCheck },
       { to: '/call-logs', label: 'Call Logs', icon: PhoneCall },
@@ -60,13 +61,7 @@ const [reportsOpen, setReportsOpen] = useState(
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-mark">
-            <Headset size={22} />
-          </div>
-          <div>
-            <div className="brand-name">LeadDesk</div>
-            <div className="brand-subtitle">SALES WORKSPACE</div>
-          </div>
+          <img className="brand-logo" src="/mind2pixel-logo.svg" alt="Mind2Pixel" />
         </div>
 
         <div className="workspace-label">WORKSPACE</div>
