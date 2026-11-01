@@ -9,6 +9,7 @@ import {
   FileSpreadsheet,
   LayoutDashboard,
   LogOut,
+  Menu,
   Settings,
   ShieldCheck,
   ArrowLeftRight ,
@@ -24,6 +25,7 @@ export default function Layout({ profile }: { profile: Profile }) {
   const navigate = useNavigate();
   const location = useLocation();
   const admin = profile.role === 'admin';
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
 const [reportsOpen, setReportsOpen] = useState(
   location.pathname.startsWith('/reports')
@@ -59,7 +61,15 @@ const [reportsOpen, setReportsOpen] = useState(
 
   return (
     <div className="app-shell">
-      <aside className="sidebar">
+      {mobileNavOpen && (
+        <button
+          type="button"
+          className="mobile-nav-backdrop"
+          aria-label="Close navigation menu"
+          onClick={() => setMobileNavOpen(false)}
+        />
+      )}
+      <aside id="primary-navigation" className={`sidebar${mobileNavOpen ? ' mobile-nav-open' : ''}`}>
         <div className="brand">
           <img className="brand-logo" src="/mind2pixel-logo.svg" alt="Mind2Pixel" />
         </div>
@@ -74,6 +84,7 @@ const [reportsOpen, setReportsOpen] = useState(
       to={item.to}
       end={item.to === '/'}
       className={({ isActive }) => `side-link ${isActive ? 'active' : ''}`}
+      onClick={() => setMobileNavOpen(false)}
     >
       <item.icon size={18} />
       <span>{item.label}</span>
@@ -100,19 +111,19 @@ const [reportsOpen, setReportsOpen] = useState(
 
       <div className={`report-subnav ${reportsOpen ? 'expanded' : ''}`}>
   <div className="report-subnav-inner">
-    <NavLink to="/reports" className={({ isActive }) =>
+    <NavLink to="/reports" onClick={() => setMobileNavOpen(false)} className={({ isActive }) =>
       `report-subnav-link ${isActive ? 'active' : ''}`
     }>
       All Report
     </NavLink>
 
-    <NavLink to="/reports/progress" className={({ isActive }) =>
+    <NavLink to="/reports/progress" onClick={() => setMobileNavOpen(false)} className={({ isActive }) =>
       `report-subnav-link ${isActive ? 'active' : ''}`
     }>
       Progress Report
     </NavLink>
 
-    <NavLink to="/reports/leads" className={({ isActive }) =>
+    <NavLink to="/reports/leads" onClick={() => setMobileNavOpen(false)} className={({ isActive }) =>
       `report-subnav-link ${isActive ? 'active' : ''}`
     }>
       Lead Report
@@ -132,7 +143,7 @@ const [reportsOpen, setReportsOpen] = useState(
               className={`side-link side-button ${
                 location.pathname === '/users' ? 'active' : ''
               }`}
-              onClick={() => navigate('/users')}
+              onClick={() => { setMobileNavOpen(false); navigate('/users'); }}
             >
               <ShieldCheck size={18} />
               <span>User management</span>
@@ -142,7 +153,7 @@ const [reportsOpen, setReportsOpen] = useState(
               className={`side-link side-button ${
                 location.pathname === '/settings' ? 'active' : ''
               }`}
-              onClick={() => navigate('/settings')}
+              onClick={() => { setMobileNavOpen(false); navigate('/settings'); }}
             >
               <Settings size={18} />
               <span>Settings</span>
@@ -153,7 +164,7 @@ const [reportsOpen, setReportsOpen] = useState(
         <div className="sidebar-bottom">
           
 
-          <button className="profile-row" onClick={logout}>
+          <button className="profile-row" onClick={() => { setMobileNavOpen(false); void logout(); }}>
             <div className="avatar">
               {profile.full_name?.slice(0, 1).toUpperCase() || 'U'}
             </div>
@@ -168,9 +179,21 @@ const [reportsOpen, setReportsOpen] = useState(
 
       <main className="main-area">
         <header className="topbar">
-          <div className="breadcrumb-text">
-            Workspace <span>/</span>{' '}
-            <strong>{currentItem?.label || 'Lead details'}</strong>
+          <div className="topbar-left">
+            <button
+              type="button"
+              className="mobile-nav-toggle"
+              aria-label={mobileNavOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-controls="primary-navigation"
+              aria-expanded={mobileNavOpen}
+              onClick={() => setMobileNavOpen(value => !value)}
+            >
+              <Menu size={20} />
+            </button>
+            <div className="breadcrumb-text">
+              Workspace <span>/</span>{' '}
+              <strong>{currentItem?.label || 'Lead details'}</strong>
+            </div>
           </div>
 
           <div className="topbar-right">
